@@ -1,36 +1,21 @@
-/*
-4. Estacionamento controle de vagas
- 
-Crie um programa para controle de vagas de estacionamento 
-rotativo que contém 20 vagas.
-
-O valor a ser pago por cada clientes será contabilizado baseando
-na quantidade de tempo em que o veículo ficou estacionado. 
-
-Preocupe-se em não permitir que um carro estacione em uma vaga já ocupado.
-
-Para carros que ficarem estacionados por um período menor que 1 hora
-deverá ser cobrado o tempo fracionado.
- 
-No final do dia será importante um relatório com as placas e quantidade
-de tempo que cada veículo manteve estacionado  e o total de valor faturado no dia.
-*/
-
 #include <stdio.h>
 #include <ctype.h>
 
-int estacione(char placa[]);
+int estacione(char placa[], int hora);
 int vaga(char placa[]);
+int pegaHora(char hora[]);
 	
 	int vagas[20];
 	int carros[20][8];
-	
+    int horaEntrada[20];
+    
 int main(int argc, char **argv)
 {
 	char resposta;
 	char placa[8];
 	float valor_a_pagar;
-	
+    char horaSaida[5];
+    char hora[5];    	
 	printf("Olá seja bem vindo!!");
 	printf("\nDigite 1 para: Estacionar");
 	printf("\nDigite 2 para: Sair do estacionamento");
@@ -38,9 +23,18 @@ int main(int argc, char **argv)
 	
 	
 	if(resposta = '1'){
-		printf("Digite sua placa por favor\n");
+        printf("Digite sua placa por favor\n");
 		scanf(" %s", placa);
-		printf("Estacione na vaga: %d", estacione(placa));
+		printf("Digite que horas são no formato 24 Hrs");
+		scanf(" %s", hora);
+		
+		if(estacione(placa, pegahora(hora)) < 20){
+            int x = estacione(placa, pegahora(hora));
+  		printf("Estacione na vaga: %d", x);
+         }else{
+          printf("Não temos vagas volte mais tarde");
+        }		
+		
 		
 	}
 	if(resposta = '2'){
@@ -51,7 +45,7 @@ int main(int argc, char **argv)
 
 }
 
-int estacione(char placa[]){
+int estacione(char placa[], int hora){
 	int cont, vagaDisponivel, x, i;
 	int achou = 0;
 	do{
@@ -62,9 +56,12 @@ int estacione(char placa[]){
 			for(x = 0; x < 8; x++){
 				carros[cont][x] = placa[x];
 			}
+			horaEntrada[cont] = hora;
 		}
 		cont++;			
-	}while(achou = 0);	
+	}while(achou = 0 || cont = 19);
+if(cont = 19 && achou = 0) vagaDisponivel = 20;	
+	
  return vagaDisponivel;	
 }
 
@@ -85,3 +82,16 @@ int vaga(char placa[]){
  return vagaOndeEsta;	
 }
 
+int pegaHora(char hora[]){
+    int hora;
+    int minutos;
+    int cont;
+if(hora[] = '\0'){
+    int hora =  concat(hora[0],hora[1]);
+    int minutos =  concat(hora[2],hora[3]);
+}else{
+    int hora =  concat(hora[0]);
+    int minutos =  concat(hora[1],hora[2]);
+}
+    return (hora*60)+minutos;
+}
