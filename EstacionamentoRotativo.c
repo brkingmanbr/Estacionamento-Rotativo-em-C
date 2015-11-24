@@ -24,6 +24,7 @@ int vaga(char placa[]);
 int pegaHora(char hora[]);
 int proximaPosicaoLivreNoRegistro();
 int placaNoRelatorio(char placa[]);
+void fecharEstacionamento();
 	
 	char relatorioPlacas[100][8];
 	int relatorioTempo[100];
@@ -37,34 +38,34 @@ int placaNoRelatorio(char placa[]);
     
 int main(int argc, char **argv)
 {
-	char resposta;
+	int resposta;
 	do{
-	resposta = '0';
-	char placa[8] = {0,0,0,0,0};
-    char hora[5] = {0,0,0,0,0};    	
+	resposta = 0;
+	char placa[8];
+    char hora[5];    	
 	printf("Olá seja bem vindo!!");
 	printf("\nDigite 1 para: Estacionar um carro");
 	printf("\nDigite 2 para: Retirar um carro do Estacionamento");
 	printf("\nDigite 3 para: Fechar o Estacionamento");
-	scanf(" %c", resposta);
+	scanf("%i", resposta);
 	
 	
-	if(resposta = '1'){
+	if(resposta == 1){
         printf("Digite sua placa por favor\n");
-		scanf(" %s", placa);
-		printf("Digite que horas são no formato 24 Hrs");
-		scanf(" %s", hora);
+		scanf("%s", placa);
+		printf("Digite que horas são no formato 24 Hrs\n");
+		scanf("%s", hora);
 		
 		if(estacione(placa, pegaHora(hora)) < 20){
             
-  		printf("Estacione na vaga: %d", estacione(placa, pegaHora(hora)));
+  		printf("\nEstacione na vaga: %d", estacione(placa, pegaHora(hora)));
          }else{
-          printf("Não temos vagas volte mais tarde");
+          printf("\nNão temos vagas volte mais tarde");
         }		
 		
 		
 	}
-	if(resposta = '2'){
+	if(resposta == 2){
 		printf("Digite sua placa por favor\n");
 		scanf(" %s", placa);
 		printf("Digite que horas são no formato 24 Hrs");
@@ -73,7 +74,7 @@ int main(int argc, char **argv)
 		
 	}
 	system("cls");
-	}while(resposta != '3');
+	}while(resposta != 3);
 
 }
 
@@ -168,16 +169,16 @@ int pegaHora(char hora[]){
 	
 if(hora[3] == '\0'){
     H = (hora[0]*10)+hora[1];
-    M = (hora[2]*10)+hora[3];
-}else{
-    H = hora[0];
-    M = (hora[1]*10)+hora[2];
-}
-    return (H*60)+M;
-}
+		M = (hora[2]*10)+hora[3];
+	}else{
+		H = hora[0];
+		M = (hora[1]*10)+hora[2];
+	}
+		return (H*60)+M;
+	}
 
-void fecharEstacionamento(){
-	system("cls");
+	void fecharEstacionamento(){
+		system("cls");
 	
 	
 }
