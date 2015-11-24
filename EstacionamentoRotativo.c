@@ -41,8 +41,6 @@ int main(int argc, char **argv)
 	do{
 	resposta = '0';
 	char placa[8] = {0,0,0,0,0};
-	float valor_a_pagar = 0.0;
-    char horaSaida[5] = {0,0,0,0,0};
     char hora[5] = {0,0,0,0,0};    	
 	printf("Olá seja bem vindo!!");
 	printf("\nDigite 1 para: Estacionar um carro");
@@ -71,7 +69,7 @@ int main(int argc, char **argv)
 		scanf(" %s", placa);
 		printf("Digite que horas são no formato 24 Hrs");
 		scanf(" %s", hora);
-		printf("Pelo tempo que voce ficou deverá pagar: %d", SairDoEstacionamento(placa, hora));
+		printf("Pelo tempo que voce ficou deverá pagar: %f", SairDoEstacionamento(placa, hora));
 		
 	}
 	system("cls");
@@ -80,7 +78,8 @@ int main(int argc, char **argv)
 }
 
 int estacione(char placa[], int hora){
-	int cont, vagaDisponivel, x, i;
+	int cont = 0;
+	int vagaDisponivel, x;
 	int achou = 0;
 	do{
 		if(vagas[cont] = 0){
@@ -92,7 +91,7 @@ int estacione(char placa[], int hora){
 			}
 			horaEntrada[cont] = hora;
 		}
-		cont++;			
+		cont+= 1;			
 	}while(achou == 0 && cont == 19);
 if(cont == 19 && achou == 0) vagaDisponivel = 20;	
 	
@@ -179,6 +178,7 @@ if(hora[3] == '\0'){
 
 void fecharEstacionamento(){
 	system("cls");
+	
 	
 }
 
