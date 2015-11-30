@@ -18,29 +18,28 @@
 #include <stdio.h>
 #include <ctype.h>
 
-int estacione(char placa[], long int hora);
+int estacione(char placa[], int hora);
 float SairDoEstacionamento(char placa[], char horaDaSaida[]);
 int vaga(char placa[]);
-long int pegaHora(char hora[]);
+int pegaHora(char hora[]);
 int proximaPosicaoLivreNoRegistro();
 int placaNoRelatorio(char placa[]);
 void fecharEstacionamento();
-
+void exibirRelatorio();
 	
 	char relatorioPlacas[100][8];
-	long int relatorioTempo[100];
+	int relatorioTempo[100];
 	float relatorioTotal;
 	
 	int vagas[20];
 	int carros[20][8];
-    long int horaEntrada[20];
+    int horaEntrada[20];
 
-	const float PrecoDoMinuto = 0.07; // 4,20 a Hora
+	float PrecoDoMinuto = 0.07; // 4,20 a Hora
     
 int main(int argc, char **argv)
 {
 	int resposta;
-	
 	resposta = 0;
 	char placa[8];
     char hora[5];    	
@@ -57,7 +56,7 @@ int main(int argc, char **argv)
 			scanf("%s", &placa);
 			printf("Digite que horas são no formato 24 Hrs\n");
 			scanf("%s", hora);
-			printf("%d", pegaHora(hora));
+			//printf("%d", pegaHora(hora));
 			if(estacione(placa, pegaHora(hora)) != 20){
 				
 			printf("\nEstacione na vaga: %d", estacione(placa, pegaHora(hora)));
@@ -83,7 +82,7 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-int estacione(char placa[], long int hora){
+int estacione(char placa[], int hora){
 	int cont = 0;
 	int vagaDisponivel, x;
 	int achou = 0;
@@ -108,25 +107,29 @@ float SairDoEstacionamento(char placa[], char horaDaSaida[]){
 	
 	int tempoEstacionado;
 	float valorAPagar;
-	long int HorasEstacionado;
 	int local = vaga(placa);
 	vagas[local] = 0;
 	int cont;
 	for(cont = 0; cont < 8; cont++){
 		carros[local][cont] = 0;
 	}
-	tempoEstacionado = horaEntrada[local] - pegaHora(horaDaSaida);
+	tempoEstacionado = pegaHora(horaDaSaida) - horaEntrada[local];
+    printf("Tempo estacionado %d", tempoEstacionado);
 	if(tempoEstacionado < 60){
 		valorAPagar = PrecoDoMinuto * tempoEstacionado;
+        printf("\nValor 1 %d", valorAPagar);
 	}else{
-		HorasEstacionado = tempoEstacionado/60;
-		valorAPagar = (PrecoDoMinuto*60) * (HorasEstacionado + 1);
+        printf("\nHRS 2 %d", tempoEstacionado/60);
+		valorAPagar = (PrecoDoMinuto*60) * (tempoEstacionado/60);
+        printf("\nValor 2 %d", valorAPagar);
 	}
 	int x;
 	int posicao = placaNoRelatorio(placa);
-	for(x = 0; x < 8; x++) relatorioPlacas[posicao][x] = placa[x];
+	for(x = 0; x < 8; x++){
+        relatorioPlacas[posicao][x] = placa[x];
+    }
 	relatorioTempo[posicao] = tempoEstacionado;
-	relatorioTotal += valorAPagar;
+	relatorioTotal = relatorioTotal + valorAPagar;
 
 	return valorAPagar;
 }
@@ -171,33 +174,23 @@ int placaNoRelatorio(char placa[]){
 	return OndeEstaNoRelatorio;	
 }
 
-long int pegaHora(char hora[]){
-    long int H;
-    long int M;
+int pegaHora(char hora[]){
+   int H, M, saida;
 	
-	printf("Antes de tudo H = %ld  M = %ld hora[] = %s", H, M, hora);
-if(hora[3] == '\0'){
-	H = hora[0]*10;
-	printf("H = %ld ",H);
-	H = H + hora[1];
-	printf("H = %ld ",H);
-	M = hora[2]*10;
-	printf("M = %ld ",M);
-	M = M + hora[3];
-	printf("M = %ld ",M);
+if(hora[4] == '\0'){
+    H = (hora[0] - 48) * 10;
+	H = H + (hora[1] - 48);
+	M = (hora[2] - 48 )*10;
+	M = M + (hora[3] - 48);
 	}
 	else
 	{
-	H = hora[0];
-	printf("H = %ld ",H);
-	M = hora[1]*10;
-	printf("M = %ld ",M);
-	M = M + hora[2];
-	printf("M = %ld ",M);
+	H = hora[0] - 48;
+	M = (hora[1] - 48)*10;
+	M = M + (hora[2] - 48);
 	}
-	
-	printf("H = %ld  M = %ld", H, M);
-	return (H*60)+M;
+	saida = (H*60)+ M;
+	return saida;
 }
 
 int proximaPosicaoLivreNoRegistro(){
@@ -207,5 +200,17 @@ int proximaPosicaoLivreNoRegistro(){
 }
 
 void fecharEstacionamento(){
-		printf("Foi  Rodou msm");
-		}
+    exibirRelatorio();
+}
+
+void exibirRelatorio(){
+    int x, y;
+    for(x; x < 100; x++){
+        printf(" Placa: ");
+        for(y ; y < 8; y++){
+            printf("%c", relatorioPlacas[100][y]);
+        }
+        printf("\nTempo: %ld\n\n", relatorioTempo[x]);        
+    }
+    printf("Total de lucros do dia: %f", relatorioTotal);
+}
