@@ -28,7 +28,7 @@ void fecharEstacionamento();
 void exibirRelatorio();
 	
 	char relatorioPlacas[100][8];
-	int relatorioTempo[100];
+	long int relatorioTempo[100];
 	float relatorioTotal;
 	
 	int vagas[20];
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	
 		if(resposta == 1){
 			printf("Digite sua placa por favor\n");
-			scanf("%s", &placa);
+			scanf("%s", placa);
 			printf("Digite que horas são no formato 24 Hrs\n");
 			scanf("%s", hora);
 			//printf("%d", pegaHora(hora));
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 		}
 		if(resposta == 2){
 			printf("Digite sua placa por favor\n");
-			scanf(" %s", &placa);
+			scanf(" %s", placa);
 			printf("Digite que horas são no formato 24 Hrs");
 			scanf(" %s", hora);
 			printf("Pelo tempo que voce ficou deverá pagar: %f", SairDoEstacionamento(placa, hora));
@@ -117,11 +117,11 @@ float SairDoEstacionamento(char placa[], char horaDaSaida[]){
     printf("Tempo estacionado %d", tempoEstacionado);
 	if(tempoEstacionado < 60){
 		valorAPagar = PrecoDoMinuto * tempoEstacionado;
-        printf("\nValor 1 %d", valorAPagar);
+        printf("\nValor 1 %.2f", valorAPagar);
 	}else{
         printf("\nHRS 2 %d", tempoEstacionado/60);
 		valorAPagar = (PrecoDoMinuto*60) * (tempoEstacionado/60);
-        printf("\nValor 2 %d", valorAPagar);
+        printf("\nValor 2 %.2f", valorAPagar);
 	}
 	int x;
 	int posicao = placaNoRelatorio(placa);
@@ -205,9 +205,9 @@ void fecharEstacionamento(){
 
 void exibirRelatorio(){
     int x, y;
-    for(x; x < 100; x++){
+    for(x=0; x < 100; x++){
         printf(" Placa: ");
-        for(y ; y < 8; y++){
+        for(y=0; y < 8; y++){
             printf("%c", relatorioPlacas[100][y]);
         }
         printf("\nTempo: %ld\n\n", relatorioTempo[x]);        
