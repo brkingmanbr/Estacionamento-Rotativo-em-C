@@ -6,7 +6,7 @@ double SairDoEstacionamento(char placa[], char horaDaSaida[]);
 int vaga(char placa[]);
 int pegaHora(char hora[]);
 int proximaPosicaoLivreNoRegistro();
-int placaNoRelatorio(char placa[]);
+int ondeEstaEstacionado(char placa[]);
 void fecharEstacionamento();
 void exibirRelatorio();
 	
@@ -53,6 +53,13 @@ void main(int argc, char **argv)
 			printf("Pelo tempo que voce ficou deverá pagar: %lf", SairDoEstacionamento(placa, hora));
 			
 		}
+		if(resposta == 4){
+			printf("TESTE");
+			printf("placa");
+			scanf(" %s", placa);
+			printf("Na vaga: %d", ondeEstaEstacionado(placa));
+		}
+		
 	}
 	fecharEstacionamento();	
 }
@@ -91,7 +98,7 @@ double SairDoEstacionamento(char placa[], char horaDaSaida[]){
     printf("Tempo estacionado %d", tempoEstacionado);
 	printf("Entrada %d", horaEntrada[local]);
 	printf("Saida %d", pegaHora(horaDaSaida));
-	printf("placa no relatorio %d", placaNoRelatorio(placa));
+	printf("placa no relatorio %d", ondeEstaEstacionado(placa));
 	if(tempoEstacionado <= 60){
 		valorAPagar = PrecoDoMinuto * tempoEstacionado;
         printf("\nValor 1 %.2f", valorAPagar);
@@ -103,13 +110,12 @@ double SairDoEstacionamento(char placa[], char horaDaSaida[]){
 	for(cont = 0; cont < 8; cont++){
 		carros[local][cont] = 0;
 	}
-	posicao = placaNoRelatorio(placa);
+	posicao = proximaPosicaoLivreNoRegistro();
 	for(x = 0; x < 8; x++){
         relatorioPlacas[posicao][x] = placa[x];
     }
 	relatorioTempo[posicao] = tempoEstacionado;
 	relatorioTotal = relatorioTotal + valorAPagar;
-
 	return valorAPagar;
 }
 
@@ -132,26 +138,26 @@ int vaga(char placa[]){
  return vagaOndeEsta;	
 }
 
-int placaNoRelatorio(char placa[]){
-	int OndeEstaNoRelatorio;
+int ondeEstaEstacionado(char placa[]){
+	int vagaEmQueEsta;
 	int i = 0;
 	int x = 0;
 	int k = 0;
 	int achou;
-	for(i = 0; achou = 0; i++){
+	for(i = 0; achou = 0 && i < 20; i++){
 		for( k = 0; k < 8; k++){
-			while(placa[k] == relatorioPlacas[i][k] && placa[k] != '\0' && relatorioPlacas[i][k] != '\0') x++;
+			while(placa[k] == carros[i][k] && placa[k] != '\0' && carros[i][k] != '\0') x++;
+			printf("I: %d K: %d X: %d", i, k, x);
 		}
-		if(placa[k] == '\0' && relatorioPlacas[i][k] == '\0' && x == 8){
+		if(placa[k] == '\0' && carros[i][k] == '\0' && x == 8){
 			achou = 1;
-			OndeEstaNoRelatorio = i;			
+			vagaEmQueEsta = i;			
+			printf("Vaga em que está: %d", vagaEmQueEsta);
 		}else{
 			x = 0;
 		}
-			
 	}
-	if(i == 100 && OndeEstaNoRelatorio == 0) OndeEstaNoRelatorio = proximaPosicaoLivreNoRegistro();
-	return OndeEstaNoRelatorio;	
+	return vagaEmQueEsta;	
 }
 
 int pegaHora(char hora[]){
