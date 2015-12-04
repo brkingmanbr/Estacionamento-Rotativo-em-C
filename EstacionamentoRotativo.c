@@ -53,12 +53,7 @@ void main(int argc, char **argv)
 			printf("Pelo tempo que voce ficou deverá pagar: %lf", SairDoEstacionamento(placa, hora));
 			
 		}
-		if(resposta == 4){
-			printf("TESTE");
-			printf("placa");
-			scanf(" %s", placa);
-			printf("Na vaga: %d", ondeEstaEstacionado(placa));
-		}
+		
 		
 	}
 	fecharEstacionamento();	
@@ -90,20 +85,22 @@ double SairDoEstacionamento(char placa[], char horaDaSaida[]){
 	
 	int tempoEstacionado;
 	double valorAPagar;
-	int local = vaga(placa);
+	int local = ondeEstaEstacionado(placa);
 	int posicao;
 	vagas[local] = 0;
 	
 	tempoEstacionado = pegaHora(horaDaSaida) - horaEntrada[local];
-    printf("Tempo estacionado %d", tempoEstacionado);
-	printf("Entrada %d", horaEntrada[local]);
-	printf("Saida %d", pegaHora(horaDaSaida));
-	printf("placa no relatorio %d", ondeEstaEstacionado(placa));
+    
 	if(tempoEstacionado <= 60){
 		valorAPagar = PrecoDoMinuto * tempoEstacionado;
-        printf("\nValor 1 %.2f", valorAPagar);
 	}else{
-		valorAPagar = (PrecoDoMinuto*60) * (tempoEstacionado/60);
+        if(tempoEstacionado%60 == 0){
+         valorAPagar = PrecoDoMinuto * tempoEstacionado;
+        }else{
+         int hora = tempoEstacionado/60;
+         hora = hora + 1;         
+         valorAPagar = (PrecoDoMinuto*60) * hora;
+        }
 	}
 	int cont;
 	int x;
@@ -147,12 +144,10 @@ int ondeEstaEstacionado(char placa[]){
 	for(i = 0; achou = 0 && i < 20; i++){
 		for( k = 0; k < 8; k++){
 			while(placa[k] == carros[i][k] && placa[k] != '\0' && carros[i][k] != '\0') x++;
-			printf("I: %d K: %d X: %d", i, k, x);
 		}
 		if(placa[k] == '\0' && carros[i][k] == '\0' && x == 8){
 			achou = 1;
-			vagaEmQueEsta = i;			
-			printf("Vaga em que está: %d", vagaEmQueEsta);
+			vagaEmQueEsta = i;
 		}else{
 			x = 0;
 		}
@@ -181,7 +176,7 @@ if(hora[4] == '\0'){
 
 int proximaPosicaoLivreNoRegistro(){
 	int x;
-	for(x = 0; relatorioTempo != 0; x++);
+	for(x = 0; relatorioTempo[x] != 0; x++);
 	return x;
 }
 
